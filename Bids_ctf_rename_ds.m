@@ -1,26 +1,29 @@
-function UnknownFiles = Bids_ctf_rename_ds(originalDs, newDsName, newSessionFolder, isAnonymize, sessionDateTime)
-% ctf_rename_ds: Renames and/or anonymizes a CTF dataset (.ds)
+function UnknownFiles = Bids_ctf_rename_ds(originalDs, newDsName, newSessionFolder, ...
+        isAnonymize, sessionDateTime, isCleanup)
+% Bids_ctf_rename_ds: Renames and/or anonymizes a CTF dataset (.ds)
 %
-% USAGE:    ctf_rename_ds(originalDs.ds, newDsName.ds);
-%           ctf_rename_ds(originalDs.ds, newDsName.ds, newSessionFolder);
-%           ctf_rename_ds(originalDs.ds, newDsName.ds, [], 1);
-%           ctf_rename_ds(originalDs.ds, newDsName.ds, [], 1, sessionDateTime);
+% USAGE:    Bids_ctf_rename_ds(originalDs, newDsName, newSessionFolder, isAnonymize, sessionDateTime, isCleanup);
 %
 % INPUT:    OriginalDs - full path to original ds
 %           newSessionFolder - path to new session folder if different from original, ending with '/meg'.
 %           newDsName - new name of ds folder, in BIDS format
 %           newDsName = ['sub-' SubjectID '_ses-' SessionID '_task-' TaskName '_run-' RunNumb '_meg.ds'];
-%           isAnonymize = 0 or 1 (0/false = keep all orig fields, 1/true = remove identifying fields)
+%           isAnonymize = 0 (default) or 1.  If 1/true = remove identifying fields, some files (see below).
 %           sessionDateTime = new date [year, month, day] array, with optional additional elements 
 %                for [hour, minute, second, millisecond], or [] = use original date/time. 
 %                Changing session date/time is only possible when anonymizing.
+%           isCleanup = 0 (default) or 1. If true, deletes all unnecessary files (see below).
 %
 % Anonymization will remove all subject identifying information from the header
 % files (names, dates, collection description, operator, run titles); birthdate
 % is changed to 1900-01-01 and subject sex is set to 'other'; .bak files are
 % deleted, as well as .hist, .newds, processing.cfg.
 %
-% Without anonymization, only empty .bak files are deleted.
+% Selecting isCleanup will additionally delete many unnecessary files to facilitate sharing,
+% including hz.ds sub-recordings, all .bak files, .xml, and many empty files: .eeg, .lock,
+% .segments, BadChannels, etc.
+%
+% Without anonymization or cleanup, only empty .bak files are deleted.
 %
 % OUTPUT:   new dataset
 
@@ -42,11 +45,11 @@ function UnknownFiles = Bids_ctf_rename_ds(originalDs, newDsName, newSessionFold
 % For more information type "brainstorm license" at command prompt.
 % =============================================================================@
 %
-% Authors:  Elizabeth Bock, 2017-2018, Marc Lalancette 2019-2022
+% Authors:  Elizabeth Bock, 2017-2018, Marc Lalancette 2019-2026
 
+UnknownFiles = [];
 % Latest software version validated with this anonymization function.
 KnownAcqVersion = 'Acq 6.1.14-beta-el6_8.x86_64-20180116-3847';
-
 % Need CTF read/writeCPersist, in Brainstorm or Fieldtrip externals.
 if isempty(which('readCPersist'))
     error('Run BidsSetPath to load required dependencies.');
@@ -58,12 +61,16 @@ end
 if nargin < 3
     newSessionFolder = [];
 end
-if nargin < 4
-    isAnonymize = 0;
+if nargin < 4 || isempty(isAnonymize)
+    isAnonymize = false;
 end
 if nargin < 5
     sessionDateTime = [];
 end
+if nargin < 6 || isempty(isCleanup)
+    isCleanup = false;
+end
+
 
 if ~exist(originalDs, 'dir')
     error('Dataset not found.');
@@ -93,7 +100,7 @@ newDs = fullfile(newPath, newDsName);
 
 % Verify there's something to do.
 if strcmp(newPath, origPath) && strcmp(newName, origName)
-    if ~isAnonymize
+    if ~isAnonymize && ~isCleanup
         warning('Nothing to do.');
         return;
     % else: No need to warn that we are overwriting original files, since this
@@ -165,10 +172,10 @@ if ~strcmp(newName, origName)
     end
 end
 
-%% Check for unknown files
+%% Check for unknown files 
 % Added .lock as a known file, though it's only present when the recording didn't end properly.
-ExpectedFiles = dir(fullfile(newDs, [newName '*']));
-ExpectedFiles = [{ExpectedFiles.name}'; ...
+ExpectedFiles = dir(fullfile(newDs, [newName '*'])); % (all files with names that start with the .ds name)
+ExpectedFiles = [{ExpectedFiles.name}'; ... 
     {'processing.cfg'; 'processing.cfg.bak'; ...
     'ClassFile.cls'; 'ClassFile.cls.bak'; ...
     'MarkerFile.mrk'; 'MarkerFile.mrk.bak'; ...
@@ -189,6 +196,12 @@ if ~isempty(iU)
 end
 
 %% Delete unnecessary files
+
+% Call new cleanup function. Many files would already be deleted below when anonymizing, and this
+% could all be merged and simplified, but for now, just call this external function.
+if isCleanup
+    BidsCleanupCtfMeg(newDs, false); % not "dry run"
+end
 
 % empty (or all) backup files
 BakFiles = dir(fullfile(newDs, '*.bak'));

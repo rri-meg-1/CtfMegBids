@@ -1,16 +1,23 @@
-function BidsCleanupCtfMeg(BidsFolder, isDryRun, isMoveHz, isAnySize, isCheckEvents)
+function BidsCleanupCtfMeg(Folder, isDryRun, isMoveHz, isAnySize, isCheckEvents)
     % Remove empty or unnecessary files (e.g. hz.ds) from CTF MEG recordings in BIDS dataset.
+    %
     % This reduces the number of files and accelerates transfers.
+    % Folder can be a single CTF MEG recording (.ds) or a BIDS dataset root folder.
     % isDryRun [true]: if set to true, will only display information and proposed actions. 
     %                  Set to false to delete files. Use with care!
-    % isMoveHz [false]: if true, move hz.ds to sourcedata instead of deleting them.
+    % isMoveHz [false]: if true, move hz.ds to sourcedata instead of deleting them. Requires
+    %                  running on a BIDS dataset, and not a single recording.
     % isAnySize [false]: if true, file sizes are not checked and even non-empty files in the
     %                  "unnecessary" list are deleted.
     % isCheckEvents [true]: if true, look if .mrk file contains only "fake" events at time zero of
     %                  trials, in which case delete the .mrk file, and corresponding BIDS .evt file.
+    %                  This relies on the .evt file and won't do anything without it.
+    
+    % Marc Lalancette, 2026-10-14
 
-    % See Marc's notes (in MEG & Equipment section, .ds files page) for all possible files inside .ds.
-    % For anonymisation, these files would already be deleted: .bak, .hist, .newds, processing.cfg.
+    % See Bids_ctf_rename_ds for all possible files inside .ds. That function now calls this
+    % optionally for cleanup. But for anonymisation, these files would already be deleted: .bak,
+    % .hist, .newds, processing.cfg.
 
     if nargin < 4 || isempty(isCheckEvents)
         isCheckEvents = true;
@@ -25,11 +32,21 @@ function BidsCleanupCtfMeg(BidsFolder, isDryRun, isMoveHz, isAnySize, isCheckEve
         isDryRun = true;
     end
 
+    if strcmp(Folder(end-2:end), '.ds')
+        isBids = false;
+        if isMoveHz
+            error('The option to move hz.ds is only available when running on a BIDS dataset, not individiual recordings.');
+        end
+    else
+        isBids = true;
+        BidsFolder = Folder;
+        Folder = fullfile(BidsFolder, 'sub-*', '**', '*.ds');
+    end
     % Delete "head zeroing" recordings
-    HzDs = dir(fullfile(BidsFolder, 'sub-*', '**', '*.ds', 'hz.ds*')); % last * to avoid listing contents
+    HzDs = dir(fullfile(Folder, 'hz.ds*')); % last * to avoid listing contents
     for iHz = 1:numel(HzDs)
         File = fullfile(HzDs(iHz).folder, HzDs(iHz).name);
-        if isMoveHz
+        if isMoveHz % implies isBids
             NewFile = replace(File, BidsFolder, fullfile(BidsFolder, 'sourcedata'));
             % Simplify by not having two .ds folders
             NewFile = replace(NewFile, 'meg.ds/hz.ds', 'meghz.ds');
@@ -41,12 +58,13 @@ function BidsCleanupCtfMeg(BidsFolder, isDryRun, isMoveHz, isAnySize, isCheckEve
         else
             fprintf('Deleting %s\n', File);
             if ~isDryRun
-                delete(File);
+                [IsOk, Message] = rmdir(File, 's'); % recursive
+                if ~IsOk, error(Message); end
             end
         end
     end
     % Check if there are any unexpected folders.
-    AllDsFiles = dir(fullfile(BidsFolder, 'sub-*', '**', '*.ds', '*')); % includes '.' and '..'
+    AllDsFiles = dir(fullfile(Folder, '*')); % includes '.' and '..'
     AllDsFiles(strcmpi({AllDsFiles.name}, '.')) = [];
     AllDsFiles(strcmpi({AllDsFiles.name}, '..')) = [];
     if isDryRun
@@ -89,13 +107,16 @@ function BidsCleanupCtfMeg(BidsFolder, isDryRun, isMoveHz, isAnySize, isCheckEve
         end
     end
     % Display
-    for t = 1:nTypes
-        fprintf('%-12s  %4d  size: %10d - %10d bytes  ex:%s\n', Types{t}, Count(t), Size(t,:), ...
-            fullfile(AllDsFiles(iFirst(t)).folder, AllDsFiles(iFirst(t)).name));
+    if isBids
+        for t = 1:nTypes
+            fprintf('%-12s  %4d  size: %10d - %10d bytes  ex:%s\n', Types{t}, Count(t), Size(t,:), ...
+                fullfile(AllDsFiles(iFirst(t)).folder, AllDsFiles(iFirst(t)).name));
+        end
     end
     % Keep: .res4, .meg4 (.1_meg4), .acq, .hc, .infods
     %       For events: MarkerFile.mrk, DigTrigChannelInfo.txt
 
+    disp('------------------- Deleting unnecessary files. -------------------');
     % File types to delete, when smaller or equal to size in bytes.
     FileTypes = {...
         '.bak', inf; ... % "backup" when saving occurs
@@ -108,7 +129,9 @@ function BidsCleanupCtfMeg(BidsFolder, isDryRun, isMoveHz, isAnySize, isCheckEve
         '.newds', inf; ... % for anonymization
         '.cfg', inf; ... % processing.cfg, for anonymization
         '.cls', 300; ... % empty stub has various sizes due to ds file name, this is approximation for max empty size.
-        '.de', inf ... % defaults.de, DataEditor settings
+        '.de', inf; ... % defaults.de, DataEditor settings
+        'VirtualChannels', 1; ... % unsure if fully empty when "stub", but usually not there
+        '.dsc', 1 ... % unsure if can be fully empty, but usually not there
         };
 
     nTypes = size(FileTypes, 1);
@@ -154,7 +177,12 @@ function BidsCleanupCtfMeg(BidsFolder, isDryRun, isMoveHz, isAnySize, isCheckEve
         return;
     end
     disp('------------------- Verifying events. -------------------');
-    EventsFiles = dir(fullfile(BidsFolder, 'sub-*', '**', '*events.tsv'));
+    % We rely on the BIDS events file here because it's easier to read than the marker file.
+    if isBids
+        EventsFiles = dir(fullfile(BidsFolder, 'sub-*', '**', '*events.tsv'));
+    else
+        EventsFiles = dir(replace(Folder, 'meg.ds', 'events.tsv'));
+    end
     nFiles = numel(EventsFiles);
 
     for e = 1:nFiles
