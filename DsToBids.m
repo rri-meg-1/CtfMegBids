@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function Extras = DsToBids(Recording, Destination, BidsInfo, Anonymize, ...
         ExtrasFolder, iLog, SkipEmptyRecordings)
     % Convert single CTF recording and adjoining files to BIDS structure.

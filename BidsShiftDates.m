@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsShiftDates(BidsFolder, TrustScans, Subjects)
 % Shift session dates per subject for anonymization of BIDS dataset.
 %

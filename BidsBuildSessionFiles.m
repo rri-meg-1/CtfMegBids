@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsInfo = BidsBuildSessionFiles(Recording, BidsInfo, Overwrite, SaveFiles)
     % Create BIDS metadata files for a MEG session.
     % Satisfies BIDS version indicated in BidsBuildStudyFiles.

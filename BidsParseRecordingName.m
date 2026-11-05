@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function [isBids, BidsInfo] = BidsParseRecordingName(FullName, iLog, isWarnings)
     % Extract basic info from file name.
     %

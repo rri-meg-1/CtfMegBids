@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsSwapSessions(BidsSubjectFolder, Ses1, Ses2)
 % Swap two session names (usually numbers).
 %

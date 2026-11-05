@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function Str = DatetimeToStr(DT, Format)
     % datestr chokes on NaT. Manually set to 'n/a'.
     if nargin < 2 || isempty(Format)

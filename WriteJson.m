@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function WriteJson(JsonFile, JsonStruct)
     Fid = fopen(JsonFile, 'w'); % don't write /r/n even on Windows.
     if Fid < 0

@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsRenameSubjects(BidsFolder, RenameFile)
     % Rename BIDS subjects based on csv file with two columns: "OldName", "NewName".
     %

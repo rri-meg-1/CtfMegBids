@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function [Recordings, Dataset, BidsFolder] = BidsRecordings(BidsFolder, Verbose, NoiseFirst)
     % Find MEG recordings and extract their metadata from a CTF MEG BIDS dataset.
     %

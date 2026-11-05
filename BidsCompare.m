@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function Message = BidsCompare(Old, New, Field) %, TableToScalar
     % Message is cell 1xN (line).
     % TableToScalar true will cause entire columns (with differences) to be

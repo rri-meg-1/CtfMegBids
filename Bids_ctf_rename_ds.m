@@ -28,6 +28,7 @@ function UnknownFiles = Bids_ctf_rename_ds(originalDs, newDsName, newSessionFold
 % OUTPUT:   new dataset
 
 % @=============================================================================
+% SPDX-License-Identifier: GPL-3.0-only
 % This function is part of the Brainstorm software:
 % https://neuroimage.usc.edu/brainstorm
 % 

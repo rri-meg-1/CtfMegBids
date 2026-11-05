@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsRenameSession(BidsSubjectFolder, OldNamePart, NewNamePart, isFull)
     % Rename a session ID in a CTF BIDS subject folder (and matching in sub-datasets).
     %

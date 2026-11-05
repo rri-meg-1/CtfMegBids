@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function [Dates, Files, Subjects, Sessions] = BidsScanDates(BidsFolder, MegOnly, ExcludeNoise, Verbose)
     % Extract scan dates from CTF MEG BIDS dataset.
     %

@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsCleanupCtfMeg(Folder, isDryRun, isMoveHz, isAnySize, isCheckEvents)
     % Remove empty or unnecessary files (e.g. hz.ds) from CTF MEG recordings in BIDS dataset.
     %

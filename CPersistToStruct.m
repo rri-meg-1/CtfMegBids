@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function [S, iEnd] = CPersistToStruct(C, iStart)
     % Convert CPersist file content to Matlab structure.
     %

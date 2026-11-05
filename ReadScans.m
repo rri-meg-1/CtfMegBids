@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function Scans = ReadScans(ScansFile)
 % Read a BIDS _scans.tsv file.
 if exist(ScansFile, 'file')

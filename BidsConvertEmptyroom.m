@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsConvertEmptyroom(BidsFolder, Move, Revert, ForceSearch)
 % Change the convention used for empty room noise recordings in a MEG BIDS dataset.
 %

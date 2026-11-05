@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function ExtractedFiles = ExtractTar(Tar, Destination)
 % Extract all files into Destination folder, ignoring any folder structure in archive.
 

@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsSetPath()
     % Set up Matlab path, including some Brainstorm dependencies.
     MPath = fileparts(mfilename('fullpath'));

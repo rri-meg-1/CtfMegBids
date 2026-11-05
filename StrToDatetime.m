@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function DT = StrToDatetime(Str, Format)
     % 'n/a' will become NaT
     if isempty(Str)

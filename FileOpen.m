@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function Fid = FileOpen(File, Permission)
 Fid = fopen(File, Permission);
 if Fid < 0

@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function T = BidsSessions(BidsFolder, Verbose, ForceDateRead, SourcedataDate, SubPrefix)
     % List sessions from BIDS dataset in table (Subject, Session, Date, ScansFile).
     %

@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsCopyManualInfo(BidsFolder, CopyFolder)
 % Copy "manual" info (coregistration and artefact) from one BIDS dataset to another copy.
 %

@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function Old = UpdateStruct(Old, New)
 % This function updates Old with New values, and keeps fields that are not in
 % New unchanged.

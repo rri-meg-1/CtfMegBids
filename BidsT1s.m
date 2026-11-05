@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function [Images, Dataset] = BidsT1s(BidsFolder, Verbose)
     % Extract all T1w image files and their metadata from a BIDS dataset.
     %

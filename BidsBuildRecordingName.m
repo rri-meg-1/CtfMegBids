@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function Name = BidsBuildRecordingName(BidsInfo)
     Name = ['sub-', BidsInfo.Subject, '_ses-', BidsInfo.Session, '_task-', BidsInfo.Task];
     if isfield(BidsInfo, 'Acq') && ~isempty(BidsInfo.Acq)

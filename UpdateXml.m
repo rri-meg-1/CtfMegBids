@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function XmlObj = UpdateXml(XmlObj, Tags, NewVal, NullWarn)
 % Update the value of elements specified by Tags.  
 % NewVal can be a function handle that will be applied to the current value.

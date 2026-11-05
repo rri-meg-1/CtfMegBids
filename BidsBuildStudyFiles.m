@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsInfo = BidsBuildStudyFiles(BidsFolder, BidsInfo, Overwrite, SaveFiles, RemoveEmptyFields, isEvents)
     % Create BIDS metadata files for a dataset.
     % Satisfies BIDS version indicated at the start of the code below.

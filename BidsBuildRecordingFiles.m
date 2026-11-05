@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsInfo = BidsBuildRecordingFiles(Recording, BidsInfo, Overwrite, SaveFiles, RemoveEmptyFields, iLog)
 % Create BIDS metadata files for a single CTF MEG recording.
 % Satisfies BIDS version indicated in BidsBuildStudyFiles.

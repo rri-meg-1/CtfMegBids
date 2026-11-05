@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function [Recordings, Message] = BidsRebuildScanFiles(...
         BidsFolder, Verbose, SaveFiles, SkipBuild, OldRecordings)
     % Rebuild BIDS scans.tsv files.

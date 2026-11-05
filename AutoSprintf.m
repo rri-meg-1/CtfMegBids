@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function Str = AutoSprintf(Var)
     if isempty(Var)
         Str = '(none)';

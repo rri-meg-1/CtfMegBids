@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function [isOk, Message] = mergefile(Source, Destination)
 % Move files and folders recursively without complaining of existing destination folders.
 % List all files and folders, if wildcards were used.

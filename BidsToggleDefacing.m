@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsToggleDefacing(BidsFolder, isDeface, ContinueFrom, FixCoordinates, isDenoised, AnatList)
     % Toggle original or defaced T1w scans in BIDS dataset, by copying from sourcedata or derivatives respectively.
     %

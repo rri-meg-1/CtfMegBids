@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function [Noise, Found, EmptyroomRecordings] = BidsFindAssociatedNoise(Recording, ...
     BidsInfo, iLog, KeepIfNoneFound, Verbose, EmptyroomRecordings, ForceSearch)
 %

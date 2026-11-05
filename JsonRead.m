@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function J = JsonRead(File)
     fid = fopen(File, 'r');
     if (fid < 0)

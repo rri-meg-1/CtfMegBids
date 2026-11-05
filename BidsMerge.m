@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function T = BidsMerge(Source, Destination, SortSessions, ZeroPad, SourcedataDate, RenameSourceOnly)
     % Merge two BIDS datasets, renaming sessions in chronological order.
     %

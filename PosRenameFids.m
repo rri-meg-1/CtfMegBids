@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function PosRenameFids(PosFile)
     % Rename digitized anat fids to head coils (HPI) if the latter are missing, after backing up pos file.
     % Should normally run in BIDS dataset, with backup saved under sourcedata, but works either way.

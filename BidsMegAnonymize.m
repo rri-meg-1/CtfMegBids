@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function UnknownFiles = BidsMegAnonymize(BidsFolder)
 % Anonymize raw CTF MEG recordings.
 

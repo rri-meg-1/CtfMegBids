@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function J = StructOverwrite(J, NewJ)
     % Does not recurse through levels, only copies first level.
     % See also UpdateStruct function, which is recursive.

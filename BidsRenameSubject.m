@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function BidsRenameSubject(BidsFolder, OldNamePart, NewNamePart, isFull, Verbose)
     % Rename a subject ID everywhere in a CTF MEG BIDS dataset.
     %

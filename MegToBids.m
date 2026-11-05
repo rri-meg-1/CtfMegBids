@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function MegToBids(AcqDateFolder, Destination, UseSubEmptyroom, SaveLog, StudyName, BidsOverwrite)
     % Find all CTF recordings in a folder and convert them to BIDS structure.
     %

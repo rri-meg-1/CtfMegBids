@@ -1,3 +1,5 @@
+% SPDX-License-Identifier: GPL-3.0-only
+
 function [res4Info, DateBug] = Bids_ctf_read_res4(res4Path, isQuiet)
 % 2019-03-08: Adjusted SensorDesc, units, output filter info, removed null
 % characters from date/time fields. (Should probably remove in all text
